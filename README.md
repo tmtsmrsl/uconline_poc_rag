@@ -1,0 +1,89 @@
+## FastAPI endpoint 
+The FastAPI endpoint acts as a backend for the RAG pipeline. It receives a question from the user and returns a response. 
+
+### Deploying locally
+Run the command below from the project root directory to start the FastAPI app on your local machine.
+```bash
+uvicorn fastapi_app.main:app --reload --port 8010
+```
+
+Example request to the FastAPI endpoint:
+```bash
+curl -X GET http://localhost:8010/init-msg
+```
+This will return a welcome message from the FastAPI endpoint.
+
+```bash
+curl -X 'POST' \
+  'localhost:8010/ask' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "How can we support indigenous sustainability?",
+    "response_type": "recommendation"
+  }'
+```
+Response types can be either `recommendation` (does not provide direct answer, but recommends relevant materials related to the question) or `answer` (provides direct answer to the question).
+
+## Deploying to Azure Container App
+First build the Docker image and run the container locally to test the deployment. 
+```bash
+docker build -f fastapi_app/Dockerfile -t uconline-poc-backend:latest ./fastapi_app
+```
+
+```bash
+docker run -it -p 8010:8010 --env-file fastapi_app/.env uconline-poc-backend:latest  
+```
+You can test the endpoint using the same request as shown in the previous section.
+
+If the container runs successfully, push the image to Azure Container App.
+```bash
+az containerapp up --resource-group uconline-poc --name backend --ingress external --target-port 8010 --source ./fastapi_app
+``` 
+
+If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
+```bash
+Container app created. Access your app at https://backend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io
+```
+
+IMPORTANT: Make sure to set the environment variables of the container app via the Azure portal (similar to the `.env` file) and redeploy the container app.
+You can test the deployed endpoint using similar request as shown in the previous section, but replace `localhost:8010` with the endpoint provided by Azure Container App. For example:
+```bash
+curl -X 'POST' \
+  'https://backend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io/ask' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "How can we support indigenous sustainability?",
+    "response_type": "recommendation"
+  }'
+```
+
+## Chainlit App
+The Chainlit app is a frontend for the RAG pipeline. It provides a chat interface for the user to ask questions and receive responses (which are processed by the FastAPI endpoint).
+
+### Deploying locally
+You can run the command below from the project root directory to start the Chainlit app on your local machine. Make sure to set the `FASTAPI_ENDPOINT` on `chainlit_app/utils/config.py` to the appropriate FastAPI endpoint URL.
+```bash
+python -m chainlit run chainlit_app/app.py -w --port 8000
+```
+The Chainlit app will run on `http://localhost:8000`. 
+
+### Deploying to Azure Container App
+First build the Docker image and run the container locally to test the deployment. 
+```bash
+docker build -f chainlit_app/Dockerfile -t uconline-poc-frontend:latest ./chainlit_app
+```
+
+```bash
+docker run -it -p 8000:8000 uconline-poc-frontend:latest  
+```
+You can test the endpoint using the same request as shown in the previous section.
+
+If the container runs successfully, push the image to Azure Container App.
+```bash
+az containerapp up --resource-group uconline-poc --name frontend --ingress external --target-port 8000 --source ./chainlit_app
+``` 
+
+If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
+```bash
+Container app created. Access your app at http://frontend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io
+```
