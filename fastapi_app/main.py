@@ -5,8 +5,8 @@ from typing import Dict
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from fastapi_app.utils.QAPipeline import QAPipeline
-from fastapi_app.utils.setup import (
+from utils.QAPipeline import QAPipeline
+from utils.setup import (
     initialize_llm,
     initialize_vector_search,
     load_config,

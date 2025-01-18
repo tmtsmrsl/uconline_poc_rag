@@ -2,9 +2,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import END, START, StateGraph
 from typing_extensions import Dict, List, TypedDict
 
-from fastapi_app.utils.AzureVectorSearch import AzureVectorSearch
-from fastapi_app.utils.CitationFormatter import CitationFormatter
-from fastapi_app.utils.SourceFormatter import SourceFormatter
+from utils.AzureVectorSearch import AzureVectorSearch
+from utils.CitationFormatter import CitationFormatter
+from utils.SourceFormatter import SourceFormatter
 
 
 class State(TypedDict):

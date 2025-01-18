@@ -2,9 +2,9 @@
 The FastAPI endpoint acts as a backend for the RAG pipeline. It receives a question from the user and returns a response. 
 
 ### Deploying locally
-Run the command below from the project root directory to start the FastAPI app on your local machine.
+Run the command below from the `fastapi_app` directory to start the FastAPI app on your local machine.
 ```bash
-uvicorn fastapi_app.main:app --reload --port 8010
+uvicorn main:app --reload --port 8010
 ```
 
 Example request to the FastAPI endpoint:
@@ -27,17 +27,18 @@ Response types can be either `recommendation` (does not provide direct answer, b
 ## Deploying to Azure Container App
 First build the Docker image and run the container locally to test the deployment. 
 ```bash
-docker build -f fastapi_app/Dockerfile -t uconline-copilot-backend:latest ./fastapi_app
+docker build -t uconline-copilot-backend:latest .
 ```
 
 ```bash
-docker run -it -p 8010:8010 --env-file fastapi_app/.env uconline-copilot-backend:latest  
+docker network create app-network
+docker run -it --name backend -p 8010:8010 --env-file .env --network app-network uconline-copilot-backend:latest  
 ```
 You can test the endpoint using the same request as shown in the previous section.
 
 If the container runs successfully, push the image to Azure Container App.
 ```bash
-az containerapp up --resource-group uconline-copilot --name backend --ingress external --target-port 8010 --source ./fastapi_app --location australiaeast
+az containerapp up --resource-group uconline-copilot --name backend --ingress external --target-port 8010 --source . --location australiaeast
 ``` 
 
 If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
@@ -61,26 +62,26 @@ curl -X 'POST' \
 The Chainlit app is a frontend for the RAG pipeline. It provides a chat interface for the user to ask questions and receive responses (which are processed by the FastAPI endpoint).
 
 ### Deploying locally
-You can run the command below from the project root directory to start the Chainlit app on your local machine. Make sure to set the `FASTAPI_ENDPOINT` on `chainlit_app/utils/config.py` to the appropriate FastAPI endpoint URL.
+You can run the command below from the `chainlit_app` directory to start the Chainlit app on your local machine. Make sure to set the `FASTAPI_ENDPOINT` on `chainlit_app/utils/config.py` to the appropriate FastAPI endpoint URL.
 ```bash
-python -m chainlit run chainlit_app/app.py -w --port 8000
+python -m chainlit run app.py -w --port 8000
 ```
 The Chainlit app will run on `http://localhost:8000`. 
 
 ### Deploying to Azure Container App
 First build the Docker image and run the container locally to test the deployment. 
 ```bash
-docker build -f chainlit_app/Dockerfile -t uconline-copilot-frontend:latest ./chainlit_app
+docker build -t uconline-copilot-frontend:latest .
 ```
 
 ```bash
-docker run -it -p 8000:8000 uconline-copilot-frontend:latest  
+docker run -it --name frontend -p 8000:8000 --network app-network -e FASTAPI_ENDPOINT=http://backend:8010 uconline-copilot-frontend:latest
 ```
 You can test the endpoint using the same request as shown in the previous section.
 
 If the container runs successfully, push the image to Azure Container App.
 ```bash
-az containerapp up --resource-group uconline-copilot --name frontend --ingress external --target-port 8000 --source ./chainlit_app --location australiaeast
+az containerapp up --resource-group uconline-copilot --name frontend --ingress external --target-port 8000 --source . --location australiaeast
 ``` 
 
 If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:

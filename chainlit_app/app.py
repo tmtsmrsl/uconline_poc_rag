@@ -1,13 +1,15 @@
+import os
 from typing import Dict, List
 from urllib.parse import urljoin
 
 import chainlit as cl
 import requests
 from chainlit.input_widget import Select
+from dotenv import load_dotenv
 
-from chainlit_app.utils import config
-from chainlit_app.utils.AnswerFormatter import AnswerFormatter
+from utils.AnswerFormatter import AnswerFormatter
 
+load_dotenv()
 
 async def warm_up_endpoint():
     try:
@@ -29,7 +31,7 @@ async def update_settings(settings):
     
 @cl.on_chat_start
 async def start():
-    cl.user_session.set("fastapi_endpoint", config.FASTAPI_ENDPOINT)
+    cl.user_session.set("fastapi_endpoint", os.getenv("FASTAPI_ENDPOINT"))
     
     # Setup the settings interface
     settings = await cl.ChatSettings(

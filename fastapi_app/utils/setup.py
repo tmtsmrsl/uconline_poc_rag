@@ -4,9 +4,9 @@ from typing import Dict
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from fastapi_app.utils import config
-from fastapi_app.utils.AzureVectorSearch import AzureVectorSearch
-from fastapi_app.utils.QAPipeline import QAPipeline
+from utils import config
+from utils.AzureVectorSearch import AzureVectorSearch
+from utils.QAPipeline import QAPipeline
 
 
 def load_env_vars() -> Dict:

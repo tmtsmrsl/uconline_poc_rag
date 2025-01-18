@@ -8,8 +8,8 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . ./chainlit_app
+COPY . .
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "python -m chainlit run chainlit_app/app.py --host 0.0.0.0 --port $PORT"]
+CMD ["sh", "-c", "python -m chainlit run app.py --host 0.0.0.0 --port $PORT"]
