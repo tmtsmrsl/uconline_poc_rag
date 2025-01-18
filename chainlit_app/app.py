@@ -24,7 +24,8 @@ async def warm_up_endpoint():
 @cl.on_settings_update
 async def update_settings(settings):
     """Update the settings in the user session."""
-    cl.user_session.set("response_type", settings["response_type"])
+    response_type_dict = {"Resource Recommendation": "recommendation", "Direct Answer": "answer"}
+    cl.user_session.set("response_type", response_type_dict[settings["response_type"]])
     
 @cl.on_chat_start
 async def start():
@@ -36,7 +37,7 @@ async def start():
             Select(
                 id="response_type",
                 label="Response Type",
-                values=["recommendation", "answer"],
+                values=["Resource Recommendation", "Direct Answer"],
                 initial_index=0,
             ),
         ]
