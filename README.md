@@ -27,29 +27,29 @@ Response types can be either `recommendation` (does not provide direct answer, b
 ## Deploying to Azure Container App
 First build the Docker image and run the container locally to test the deployment. 
 ```bash
-docker build -f fastapi_app/Dockerfile -t uconline-poc-backend:latest ./fastapi_app
+docker build -f fastapi_app/Dockerfile -t uconline-copilot-backend:latest ./fastapi_app
 ```
 
 ```bash
-docker run -it -p 8010:8010 --env-file fastapi_app/.env uconline-poc-backend:latest  
+docker run -it -p 8010:8010 --env-file fastapi_app/.env uconline-copilot-backend:latest  
 ```
 You can test the endpoint using the same request as shown in the previous section.
 
 If the container runs successfully, push the image to Azure Container App.
 ```bash
-az containerapp up --resource-group uconline-poc --name backend --ingress external --target-port 8010 --source ./fastapi_app
+az containerapp up --resource-group uconline-copilot --name backend --ingress external --target-port 8010 --source ./fastapi_app --location australiaeast
 ``` 
 
 If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
 ```bash
-Container app created. Access your app at https://backend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io
+Container app created. Access your app at https://backend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/ 
 ```
 
 IMPORTANT: Make sure to set the environment variables of the container app via the Azure portal (similar to the `.env` file) and redeploy the container app.
 You can test the deployed endpoint using similar request as shown in the previous section, but replace `localhost:8010` with the endpoint provided by Azure Container App. For example:
 ```bash
 curl -X 'POST' \
-  'https://backend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io/ask' \
+  'https://backend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/' \
   -H 'Content-Type: application/json' \
   -d '{
     "query": "How can we support indigenous sustainability?",
@@ -70,20 +70,20 @@ The Chainlit app will run on `http://localhost:8000`.
 ### Deploying to Azure Container App
 First build the Docker image and run the container locally to test the deployment. 
 ```bash
-docker build -f chainlit_app/Dockerfile -t uconline-poc-frontend:latest ./chainlit_app
+docker build -f chainlit_app/Dockerfile -t uconline-copilot-frontend:latest ./chainlit_app
 ```
 
 ```bash
-docker run -it -p 8000:8000 uconline-poc-frontend:latest  
+docker run -it -p 8000:8000 uconline-copilot-frontend:latest  
 ```
 You can test the endpoint using the same request as shown in the previous section.
 
 If the container runs successfully, push the image to Azure Container App.
 ```bash
-az containerapp up --resource-group uconline-poc --name frontend --ingress external --target-port 8000 --source ./chainlit_app
+az containerapp up --resource-group uconline-copilot --name frontend --ingress external --target-port 8000 --source ./chainlit_app --location australiaeast
 ``` 
 
 If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
 ```bash
-Container app created. Access your app at http://frontend.ambitiouspebble-dbb992d5.westus2.azurecontainerapps.io
+Container app created. Access your app at https://frontend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/
 ```
