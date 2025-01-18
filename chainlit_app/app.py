@@ -12,7 +12,7 @@ from chainlit_app.utils.AnswerFormatter import AnswerFormatter
 async def warm_up_endpoint():
     try:
         endpoint = urljoin(cl.user_session.get('fastapi_endpoint'), '/init-msg')
-        response = await cl.make_async(requests.get)(endpoint)
+        response = await cl.make_async(requests.get)(endpoint, timeout=60)
         response.raise_for_status()
         message = response.json()['message']
         return message
@@ -68,7 +68,7 @@ async def main(message: cl.Message):
     try:
         # Send the request to the FastAPI endpoint
         endpoint = urljoin(cl.user_session.get("fastapi_endpoint"), '/ask')
-        response = await cl.make_async(requests.post)(endpoint, json=payload)
+        response = await cl.make_async(requests.post)(endpoint, json=payload, timeout=60)
         response.raise_for_status() 
         result = response.json()
         
