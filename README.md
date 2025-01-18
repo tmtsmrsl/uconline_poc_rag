@@ -81,7 +81,7 @@ You can test the endpoint using the same request as shown in the previous sectio
 
 If the container runs successfully, push the image to Azure Container App.
 ```bash
-az containerapp up --resource-group uconline-copilot --name frontend --ingress external --target-port 8000 --source . --location australiaeast
+az containerapp up --resource-group uconline-copilot --name frontend --ingress external --target-port 8000 --source . --location australiaeast --env-vars FASTAPI_ENDPOINT=https://backend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/
 ``` 
 
 If the deployment is successful, the container app endpoint will be displayed in the terminal. For example:
