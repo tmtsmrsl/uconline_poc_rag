@@ -12,4 +12,7 @@ COPY . .
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "python -m chainlit run app.py --host 0.0.0.0 --port $PORT"]
+# Make sure start.sh is executable
+RUN chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]

@@ -6,12 +6,11 @@ import chainlit as cl
 import requests
 from chainlit.input_widget import Select
 from dotenv import load_dotenv
-
 from utils.AnswerFormatter import AnswerFormatter
 
 load_dotenv()
 
-async def warm_up_endpoint():
+async def get_initial_message() -> str:
     try:
         endpoint = urljoin(cl.user_session.get('fastapi_endpoint'), '/init-msg')
         response = await cl.make_async(requests.get)(endpoint, timeout=60)
@@ -49,7 +48,7 @@ async def start():
     wait_msg = await cl.Message(content="Preparing the chat session. Please wait a moment...").send()
     
     try:
-        initial_msg = await warm_up_endpoint()
+        initial_msg = await get_initial_message()
         await wait_msg.remove()
         await cl.Message(content=initial_msg).send()
         

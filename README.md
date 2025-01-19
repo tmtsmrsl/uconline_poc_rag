@@ -33,7 +33,7 @@ docker build -t uconline-copilot-backend:latest .
 Create a network so that the FastAPI container and the Chainlit container can communicate with each other.
 ```bash
 docker network create app-network
-docker run -it --name backend -p 8010:8010 --env-file .env --network app-network uconline-copilot-backend:latest  
+docker run -it --rm --name backend -p 8010:8010 --env-file .env --network app-network uconline-copilot-backend:latest  
 ```
 You can test the endpoint using the same request as shown in the previous section. DO NOT change the `localhost` to `0:0:0:0`.
 
@@ -77,7 +77,7 @@ docker build -t uconline-copilot-frontend:latest .
 
 Run the container under the same network as the FastAPI container, and set the `FASTAPI_ENDPOINT` environment variable to the `{NAME}:{PORT}` of the FastAPI container created earlier.
 ```bash
-docker run -it --name frontend -p 8000:8000 --network app-network -e FASTAPI_ENDPOINT=http://backend:8010 uconline-copilot-frontend:latest
+docker run -it --rm --name frontend -p 8000:8000 --network app-network -e FASTAPI_ENDPOINT=http://backend:8010 uconline-copilot-frontend:latest
 ```
 You can test the endpoint using the same request as shown in the previous section. DO NOT change the `localhost` to `0:0:0:0`.
 
