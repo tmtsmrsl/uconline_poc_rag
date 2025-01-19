@@ -1,4 +1,4 @@
-AZURE_INDEX_NAME = "emgt605_v3"
+AZURE_INDEX_NAME = "emgt605_v4"
 
 OUTPUT_FIELDS = [
             "pk",
