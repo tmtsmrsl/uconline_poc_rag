@@ -122,7 +122,7 @@ class QAPipeline():
     
     def format_answer(self, state: State):
         if state["input_allowed"] == False:
-            content = "I'm sorry, I couldn't process your question. Please ensure it relates to the course content."
+            content = "I'm sorry, I couldn't process your question. Please ensure it is appropriate to the purpose of this copilot."
             citation = {}
             return {"formatted_answer": {"content": content, "citation": citation}}
         else:
