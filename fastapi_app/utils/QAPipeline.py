@@ -1,6 +1,8 @@
+from typing import Optional
+from typing_extensions import Dict, List, TypedDict
+
 from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import END, START, StateGraph
-from typing_extensions import Dict, List, TypedDict
 
 from utils.AzureVectorSearch import AzureVectorSearch
 from utils.CitationFormatter import CitationFormatter
@@ -105,7 +107,11 @@ class QAPipeline():
         return state["input_allowed"]
         
     def retrieve(self, state: State):
-        retrieved_sources = self.vector_search.hybrid_search(query=state["question"], top_k_each=self.search_top_k_each, top_k_final=self.search_top_k_final)
+        if self.content_type_filter:
+            filter = f"metadata/content_type eq '{self.content_type_filter}'"
+        else:
+            filter = None
+        retrieved_sources = self.vector_search.hybrid_search(query=state["question"], top_k_each=self.search_top_k_each, top_k_final=self.search_top_k_final, filter=filter)
         formatted_sources = self.source_formatter.format_sources_for_llm(retrieved_sources)
         return {"sources": retrieved_sources, "formatted_sources": formatted_sources}
 
@@ -146,7 +152,8 @@ class QAPipeline():
         graph_builder.add_edge("format_answer", END)
         return graph_builder.compile()
     
-    def run(self, query: str, response_type: str = "recommendation") -> str or Dict:
+    def run(self, query: str, response_type: str = "recommendation", content_type_filter: Optional[str] = None) -> str or Dict:
         self.response_type = response_type
+        self.content_type_filter = content_type_filter
         result = self.graph.invoke({"question": query})
         return result['formatted_answer']

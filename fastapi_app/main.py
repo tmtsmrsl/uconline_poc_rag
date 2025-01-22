@@ -1,6 +1,6 @@
 import os
 from contextlib import asynccontextmanager
-from typing import Dict
+from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -33,6 +33,7 @@ app = FastAPI(lifespan=lifespan)
 class QueryRequest(BaseModel):
     query: str
     response_type: str = "recommendation"
+    content_type_filter: Optional[str] = None
 
 class Citation(BaseModel):
     url: str
@@ -54,9 +55,10 @@ Ask me anything related to the course, and I will try to answer based on the cou
 async def ask_question(request: QueryRequest):
     query = request.query
     response_type = request.response_type
+    content_type_filter = request.content_type_filter
     
     try:
-        response = app.state.qa_pipeline.run(query=query, response_type=response_type)
+        response = app.state.qa_pipeline.run(query=query, response_type=response_type, content_type_filter=content_type_filter)
         answer = response["content"]
         citations = response["citation"]
         return Response(answer=answer, citations=citations)

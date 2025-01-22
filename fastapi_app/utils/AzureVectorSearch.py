@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
@@ -14,7 +15,7 @@ class AzureVectorSearch:
         self.embedding_model = embedding_model
         self.output_fields = output_fields
 
-    def hybrid_search(self, query, top_k_each, top_k_final):
+    def hybrid_search(self, query: str, top_k_each: int = 5, top_k_final: int = 5, filter: Optional[str] = None):
         embedded_query = self.embedding_model.embed_query(query)
 
         search_results = self.search_client.search(  
@@ -28,7 +29,8 @@ class AzureVectorSearch:
             top=top_k_final,
             select=self.output_fields,
             query_type="semantic",
-            semantic_configuration_name="my-semantic-config"
+            semantic_configuration_name="my-semantic-config",
+            filter=filter
         )  
         
         results = list(search_results)

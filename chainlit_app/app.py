@@ -26,7 +26,9 @@ async def get_initial_message() -> str:
 async def update_settings(settings):
     """Update the settings in the user session."""
     response_type_dict = {"Resource Recommendation": "recommendation", "Direct Answer": "answer"}
+    content_type_dict = {"All": None, "Lesson Page": "html_content", "Video": "video_transcript"}
     cl.user_session.set("response_type", response_type_dict[settings["response_type"]])
+    cl.user_session.set("content_type_filter", content_type_dict[settings["content_type"]])
     
 @cl.on_chat_start
 async def start():
@@ -41,6 +43,12 @@ async def start():
                 values=["Resource Recommendation", "Direct Answer"],
                 initial_index=0,
             ),
+            Select(
+                id="content_type",
+                label="Content Type",
+                values=["All", "Lesson Page", "Video"],
+                initial_index=0
+            )
         ]
     ).send()
     await update_settings(settings)
@@ -63,7 +71,8 @@ async def main(message: cl.Message):
     # Prepare the request payload for the FastAPI endpoint
     payload = {
         "query": message.content,
-        "response_type": cl.user_session.get("response_type")
+        "response_type": cl.user_session.get("response_type"),
+        "content_type_filter": cl.user_session.get("content_type_filter")
     }
     
     try:
