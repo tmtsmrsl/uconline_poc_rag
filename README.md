@@ -90,3 +90,13 @@ If the deployment is successful, the container app endpoint will be displayed in
 ```bash
 Container app created. Access your app at https://frontend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/
 ```
+
+## Chrome Extension
+### Rise Autoscroller
+Link: https://chromewebstore.google.com/detail/rise-autoscroller/eokedfpaaofokboekkgbhckmeocfdmdi
+Highlight specific lesson blocks on a submodule, and allow users to automatically scroll between highlighted blocks. Simply add "/block/{block_1},{block_2}" after the original submodule URL.
+
+### Echo360 Autojumper
+Link: https://chromewebstore.google.com/detail/echo360-autojumper/hbfkmncogocdafemfoideejidpncgnao
+Allow users to jump to a specific timestamp of a video hosted on echo360.net.au, by adding "t" parameter (in seconds) to the embed URL.
+
