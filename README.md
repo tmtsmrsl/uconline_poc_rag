@@ -2,7 +2,25 @@
 The FastAPI endpoint acts as a backend for the RAG pipeline. It receives a question from the user and returns a response. 
 
 ### Deploying locally
-Run the command below from the `fastapi_app` directory to start the FastAPI app on your local machine.
+Go to the `fastapi_app` directory.
+```bash
+cd fastapi_app
+```
+Make sure to have a `.env` file in the `fastapi_app` directory following the format on the `.env.sample` file.
+
+For first-timer, create a virtual environment and install the dependencies.
+```bash
+python -m venv fastapi.venv
+source fastapi.venv/Scripts/activate 
+python -m pip install -r requirements.txt
+```
+
+Next time you only need to activate the virtual environment.
+```bash
+source fastapi.venv/Scripts/activate 
+```
+
+Run the command below to start the FastAPI app on your local machine.
 ```bash
 uvicorn main:app --reload --port 8010
 ```
@@ -62,8 +80,27 @@ curl -X 'POST' \
 ## Chainlit App
 The Chainlit app is a frontend for the RAG pipeline. It provides a chat interface for the user to ask questions and receive responses (which are processed by the FastAPI endpoint).
 
+
 ### Deploying locally
-You can run the command below from the `chainlit_app` directory to start the Chainlit app on your local machine. Make sure to set the `FASTAPI_ENDPOINT` on `.env` to the appropriate FastAPI endpoint URL.
+Go to the `chainlit_app` directory.
+```bash
+cd chainlit_app
+```
+Make sure to have a `.env` file in the `chainlit_app` directory following the format on the `.env.sample` file.
+
+For first-timer, create a virtual environment and install the dependencies.
+```bash
+python -m venv chainlit.venv
+source chainlit.venv/Scripts/activate
+python -m pip install -r requirements.txt
+```
+
+Next time you only need to activate the virtual environment.
+```bash
+source chainlit.venv/Scripts/activate
+```
+
+You can run the command below to start the Chainlit app on your local machine. Make sure to set the `FASTAPI_ENDPOINT` on `.env` to the appropriate FastAPI endpoint URL.
 ```bash
 python -m chainlit run app.py -w --port 8000
 ```
