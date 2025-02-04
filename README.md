@@ -146,11 +146,17 @@ Container app created. Access your app at https://frontend.bluepond-305ce4f5.aus
 ```
 
 ## Chrome Extension
-### Rise Autoscroller
-Link: https://chromewebstore.google.com/detail/rise-autoscroller/eokedfpaaofokboekkgbhckmeocfdmdi  
+### Installing from Chrome Web Store
+1. Rise Autoscroller: https://chromewebstore.google.com/detail/rise-autoscroller/eokedfpaaofokboekkgbhckmeocfdmdi  
 Highlight specific lesson blocks on a submodule, and allow users to automatically scroll between highlighted blocks. Simply add "/block/{block_1},{block_2}" after the original submodule URL.
 
-### Echo360 Autojumper
-Link: https://chromewebstore.google.com/detail/echo360-autojumper/hbfkmncogocdafemfoideejidpncgnao  
+2. Echo360 Autojumper: https://chromewebstore.google.com/detail/echo360-autojumper/hbfkmncogocdafemfoideejidpncgnao  
 Allow users to jump to a specific timestamp of a video hosted on echo360.net.au, by adding "t" parameter (in seconds) to the embed URL.
+
+### Installing from Local Folder
+To install the extension from local folder, follow the steps below:
+1. Open the Extension Management page by navigating to `chrome://extensions`.
+2. Enable Developer Mode by clicking the toggle switch on the top right corner of the page.
+3. Click the "Load unpacked" button and select the `echo360_autojumper` or `rise_autoscroller` directory.
+
 
