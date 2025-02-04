@@ -1,10 +1,15 @@
-# Azure UCOnline POC
-This repo contains the backend and frontend of the EMGT605 chatbot. 
+This repository contains the RAG pipeline implementation for the EMGT605 chatbot, allowing users to ask questions related to the course and receive responses that are justified by the course contents.
+
+Ensure that you have run the ETL pipeline ([uconline_poc_etl](https://github.com/tmtsmrsl/uconline_poc_etl)) to extract and store all module materials in the vector database.
 
 Tech stacks:
+- Backend: FastAPI
+- Frontend: Chainlit
 - Vector database: Azure Search
-- Embedding: OpenAI text-embedding-3-large
+- Embeddings model: OpenAI text-embedding-3-large
 - LLM: OpenAI gpt-4o
+- LLM Orchestration: Langgraph
+- LLMOps: Langsmith
 
 ## Architecture of the RAG Pipeline
 
