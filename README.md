@@ -1,3 +1,21 @@
+## Architecture of the RAG Pipeline
+
+![image](https://github.com/user-attachments/assets/b8d5e64e-f4e2-497e-9640-29f8b2584375)
+
+1. Guardrail: Use LLM to filter out questions that violate the pre-defined guardrail criteria.
+2. Retrieve: Retrieve the relevant documents from the vector database using hybrid search (dense and sparse embeddings). These documents are then further reranked using the semantic reranker to ensure high-quality retrieval results. The retrieved documents are split based on the lesson blocks or timestamps and formatted with an intermediate ID so the LLM can easily refer to it in step 3.
+3. Generate: Use LLM to generate an answer with inline citation based on the documents retrieved from step 2 and the user’s question.
+4. Format Answer: Refines the generated answer by reformatting the intermediate IDs and linking them to the original sources, ensuring traceability. Questions filtered out in step 1 still go through this step to ensure a consistent format for the final answer.
+
+## Chrome Extension
+### Rise Autoscroller
+Link: https://chromewebstore.google.com/detail/rise-autoscroller/eokedfpaaofokboekkgbhckmeocfdmdi
+Highlight specific lesson blocks on a submodule, and allow users to automatically scroll between highlighted blocks. Simply add "/block/{block_1},{block_2}" after the original submodule URL.
+
+### Echo360 Autojumper
+Link: https://chromewebstore.google.com/detail/echo360-autojumper/hbfkmncogocdafemfoideejidpncgnao
+Allow users to jump to a specific timestamp of a video hosted on echo360.net.au, by adding "t" parameter (in seconds) to the embed URL.
+
 ## FastAPI endpoint 
 The FastAPI endpoint acts as a backend for the RAG pipeline. It receives a question from the user and returns a response. 
 
@@ -127,13 +145,4 @@ If the deployment is successful, the container app endpoint will be displayed in
 ```bash
 Container app created. Access your app at https://frontend.bluepond-305ce4f5.australiaeast.azurecontainerapps.io/
 ```
-
-## Chrome Extension
-### Rise Autoscroller
-Link: https://chromewebstore.google.com/detail/rise-autoscroller/eokedfpaaofokboekkgbhckmeocfdmdi
-Highlight specific lesson blocks on a submodule, and allow users to automatically scroll between highlighted blocks. Simply add "/block/{block_1},{block_2}" after the original submodule URL.
-
-### Echo360 Autojumper
-Link: https://chromewebstore.google.com/detail/echo360-autojumper/hbfkmncogocdafemfoideejidpncgnao
-Allow users to jump to a specific timestamp of a video hosted on echo360.net.au, by adding "t" parameter (in seconds) to the embed URL.
 
