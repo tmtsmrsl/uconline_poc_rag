@@ -10,6 +10,7 @@ Tech stacks:
 - LLM: OpenAI gpt-4o
 - LLM Orchestration: Langgraph
 - LLMOps: Langsmith
+- Container deployment: Azure Container Apps
 
 ## Architecture of the RAG Pipeline
 
