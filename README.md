@@ -1,4 +1,4 @@
-This repository contains the RAG pipeline implementation for the EMGT605 chatbot, allowing users to ask questions related to the course and receive responses that are justified by the course contents.
+This repository contains the RAG pipeline implementation for the course chatbot, allowing users to ask questions related to the course and receive responses that are justified by the course contents.
 
 Ensure that you have run the ETL pipeline ([uconline_poc_etl](https://github.com/tmtsmrsl/uconline_poc_etl)) to extract and store all module materials in the vector database.
 
@@ -10,6 +10,7 @@ Tech stacks:
 - LLM: OpenAI gpt-4o
 - LLM Orchestration: Langgraph
 - LLMOps: Langsmith
+- Container deployment: Azure Container Apps
 
 ## Architecture of the RAG Pipeline
 
